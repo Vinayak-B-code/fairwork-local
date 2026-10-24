@@ -1,0 +1,754 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="FairWork Local connects customers with local service professionals through transparent pricing and quote-based bookings."
+  >
+
+  <meta name="theme-color" content="#203b29">
+  <title>FairWork Local | Local Services, Fair Prices</title>
+
+  <!-- Website styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet map styles -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+</head>
+
+<body>
+  <!-- NAVIGATION -->
+  <header class="navbar">
+    <a href="#" class="logo">
+      <span class="logo-icon">F</span>
+      <span>FairWork <span class="logo-accent">Local</span></span>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#services" data-i18n="navServices">Services</a>
+      <a href="#workers" data-i18n="navWorkers">Find Professionals</a>
+      <a href="#price-guide" data-i18n="navPrices">Fair Price Guide</a>
+      <a href="#how-it-works" data-i18n="navHow">How It Works</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button
+        type="button"
+        id="languageToggle"
+        class="secondary-button language-toggle"
+        aria-label="Switch language"
+      >मराठी</button>
+
+      <button
+        type="button"
+        id="customerAuthBtn"
+        class="secondary-button"
+        data-i18n="customerLogin"
+      >Customer Login</button>
+
+      <button
+        type="button"
+        id="workerModeBtn"
+        class="nav-button"
+        data-i18n="workerDashboard"
+      >Worker Dashboard</button>
+    </div>
+  </header>
+
+  <!-- CUSTOMER WEBSITE -->
+  <main id="customerView">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow" data-i18n="eyebrow">
+          YOUR NEIGHBOURHOOD, YOUR WORKFORCE
+        </span>
+
+        <h1 data-i18n-html="heroTitle">
+          Local skills.<br>
+          <span>Fair opportunities.</span>
+        </h1>
+
+        <p data-i18n="heroText">
+          Find trusted local service professionals, compare starting prices,
+          and agree on a fair price before the work begins.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#workers" class="primary-link" data-i18n="findProfessional">
+            Find a Professional <span>→</span>
+          </a>
+
+          <a href="#how-it-works" class="secondary-link" data-i18n="howItWorks">
+            How it works
+          </a>
+        </div>
+
+        <div class="hero-points">
+          <span data-i18n="heroPoint1">✓ Transparent starting prices</span>
+          <span data-i18n="heroPoint2">✓ Quote-based bookings</span>
+          <span data-i18n="heroPoint3">✓ Local professionals</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Local home services illustration">
+        <div class="hero-visual-card">
+          <div class="visual-topline">
+            <span class="online-dot"></span>
+            <span data-i18n="localHelp">LOCAL HELP, MADE SIMPLE</span>
+          </div>
+
+          <div class="visual-illustration">🏡</div>
+
+          <h3 data-i18n="closerHelp">Help is closer than you think.</h3>
+
+          <p data-i18n="findNearby">
+            Find a service professional in your area.
+          </p>
+
+          <div class="visual-service-row">
+            <span>⚡ <span data-service="Electrician">Electrician</span></span>
+            <span>🔧 <span data-service="Plumber">Plumber</span></span>
+          </div>
+
+          <div class="visual-service-row">
+            <span>🧹 <span data-service="Cleaner">Cleaner</span></span>
+            <span>🎨 <span data-service="Painter">Painter</span></span>
+          </div>
+        </div>
+
+        <div class="floating-note">
+          <span class="floating-note-icon">₹</span>
+          <span>
+            <strong data-i18n="agreePrice">Agree on a price</strong>
+            <small data-i18n="beforeWork">Before work begins</small>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="section services-section">
+      <div class="section-heading">
+        <span class="section-eyebrow" data-i18n="needService">
+          WHAT DO YOU NEED?
+        </span>
+
+        <h2 data-i18n="servicesTitle">Services for everyday needs</h2>
+
+        <p data-i18n="servicesText">
+          Choose a service to find local professionals who can help.
+        </p>
+      </div>
+
+      <div id="serviceList" class="service-grid"></div>
+    </section>
+
+    <!-- PROFESSIONAL SEARCH -->
+    <section id="workers" class="section workers-section">
+      <div class="section-heading section-heading-row">
+        <div>
+          <span class="section-eyebrow" data-i18n="localExperts">
+            MEET YOUR LOCAL EXPERTS
+          </span>
+
+          <h2 data-i18n="workersTitle">Find the right professional</h2>
+
+          <p data-i18n="workersText">
+            Compare profiles and request a quote that works for you.
+          </p>
+        </div>
+
+        <div class="worker-count-note" data-i18n="marketplace">
+          Local service marketplace
+        </div>
+      </div>
+
+      <div class="filter-panel">
+        <div class="filter-field search-field">
+          <label for="workerSearch" data-i18n="searchLabel">
+            Search by name or locality
+          </label>
+
+          <input
+            type="search"
+            id="workerSearch"
+            placeholder="e.g. Ravi or Kalyan West"
+            data-i18n-placeholder="searchPlaceholder"
+          >
+        </div>
+
+        <div class="filter-field">
+          <label for="serviceFilter" data-i18n="serviceCategory">
+            Service category
+          </label>
+
+          <select id="serviceFilter">
+            <option value="All" data-i18n="allServices">All services</option>
+            <option value="Electrician" data-service="Electrician">Electrician</option>
+            <option value="Plumber" data-service="Plumber">Plumber</option>
+            <option value="Cleaner" data-service="Cleaner">Cleaner</option>
+            <option value="Painter" data-service="Painter">Painter</option>
+            <option value="Carpenter" data-service="Carpenter">Carpenter</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="maxPriceFilter" data-i18n="maxPrice">
+            Maximum starting price
+          </label>
+
+          <select id="maxPriceFilter">
+            <option value="all" data-i18n="anyPrice">Any price</option>
+            <option value="400">Up to ₹400</option>
+            <option value="500">Up to ₹500</option>
+            <option value="600">Up to ₹600</option>
+            <option value="800">Up to ₹800</option>
+          </select>
+        </div>
+
+        <button
+          type="button"
+          id="clearFiltersBtn"
+          class="clear-filters-btn"
+          data-i18n="clearFilters"
+        >Clear Filters</button>
+      </div>
+
+      <div id="workerList" class="worker-grid"></div>
+
+      <!-- NEARBY WORKERS MAP -->
+      <section id="nearbyMapSection" class="map-feature-section">
+        <div class="map-section-heading">
+          <div>
+            <span class="map-eyebrow">FIND HELP NEAR YOU</span>
+            <h2>Nearby Service Professionals</h2>
+            <p>
+              Explore service areas and find professionals near your location.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            id="locateCustomerBtn"
+            class="map-action-btn"
+          >
+            Find My Location
+          </button>
+        </div>
+
+        <div
+          id="nearbyWorkersMap"
+          class="fairwork-map"
+          role="application"
+          aria-label="Map of nearby service professionals"
+        ></div>
+
+        <p id="nearbyMapMessage" class="map-notice" role="status">
+          Load the map to explore sample service areas.
+        </p>
+
+        <div id="mapWorkerResults" class="map-worker-results"></div>
+      </section>
+    </section>
+
+    <!-- FAIR PRICE GUIDE -->
+    <section id="price-guide" class="section price-guide-section">
+      <div class="section-heading">
+        <span class="section-eyebrow" data-i18n="priceEyebrow">
+          PLAN WITH CLARITY
+        </span>
+
+        <h2 data-i18n="priceTitle">Fair Price Guide</h2>
+
+        <p data-i18n="priceIntro">
+          Illustrative price ranges for common jobs around Kalyan–Dombivli.
+        </p>
+      </div>
+
+      <div id="priceGuideGrid" class="price-guide-grid"></div>
+
+      <p class="price-disclaimer" data-i18n="priceDisclaimer">
+        <strong>Important:</strong>
+        These are illustrative estimates for this prototype, not verified live
+        local rates or guaranteed quotes. Actual costs depend on job size,
+        materials, urgency, travel, and the professional. Agree on the final
+        price before work starts.
+      </p>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="section how-section">
+      <div class="section-heading">
+        <span class="section-eyebrow" data-i18n="simpleTransparent">
+          SIMPLE AND TRANSPARENT
+        </span>
+
+        <h2 data-i18n="howTitle">How FairWork Local works</h2>
+
+        <p data-i18n="howIntro">
+          A straightforward way for customers and workers to agree on a job.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon">🔎</div>
+          <h3 data-i18n="step1Title">Find a professional</h3>
+          <p data-i18n="step1Text">
+            Browse local profiles and compare service categories, areas,
+            and starting prices.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon">💬</div>
+          <h3 data-i18n="step2Title">Request a quote</h3>
+          <p data-i18n="step2Text">
+            Describe the job and suggest an amount. The professional can
+            respond to your request.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon">🤝</div>
+          <h3 data-i18n="step3Title">Agree on the price</h3>
+          <p data-i18n="step3Text">
+            Review the quote or counteroffer and confirm the booking when
+            the terms are clear.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- TRUST AND SAFETY -->
+    <section id="trust-safety" class="trust-safety-section">
+      <div class="trust-section-heading">
+        <span class="trust-eyebrow" data-i18n="safetyMatters">
+          YOUR SAFETY MATTERS
+        </span>
+
+        <h2 data-i18n="trustTitle">Trust begins with transparency</h2>
+
+        <p data-i18n="trustIntro">
+          Find local service professionals with clear information about
+          their experience, pricing, and profile status.
+        </p>
+      </div>
+
+      <div class="trust-safety-grid">
+        <article class="trust-safety-card">
+          <div class="trust-safety-icon">🛡️</div>
+          <h3 data-i18n="trust1Title">Understand verification</h3>
+          <p data-i18n="trust1Text">
+            A verification badge should reflect checks completed by the
+            platform. Demo badges in this prototype are illustrative and
+            do not confirm real-world identity.
+          </p>
+        </article>
+
+        <article class="trust-safety-card">
+          <div class="trust-safety-icon">₹</div>
+          <h3 data-i18n="trust2Title">Know the price</h3>
+          <p data-i18n="trust2Text">
+            Review the worker's starting price and agree on the final cost
+            before work begins. Ask about any additional charges.
+          </p>
+        </article>
+
+        <article class="trust-safety-card">
+          <div class="trust-safety-icon">🤝</div>
+          <h3 data-i18n="trust3Title">Agree before booking</h3>
+          <p data-i18n="trust3Text">
+            Review the quote, job description, and agreed amount. Confirm
+            the booking only when both sides understand the terms.
+          </p>
+        </article>
+
+        <article class="trust-safety-card">
+          <div class="trust-safety-icon">📋</div>
+          <h3 data-i18n="trust4Title">Check profile details</h3>
+          <p data-i18n="trust4Text">
+            Consider the worker's experience, service area, and available
+            references. Demo ratings and job counts are sample data, not
+            verified customer history.
+          </p>
+        </article>
+      </div>
+
+      <div class="trust-safety-notice">
+        <strong data-i18n="important">Important:</strong>
+        <span data-i18n="prototypeNotice">
+          FairWork Local is currently a prototype. Its sample worker profiles,
+          ratings, verification statuses, and job counts have not been
+          independently verified.
+        </span>
+      </div>
+    </section>
+
+    <!-- CUSTOMER QUOTE HISTORY -->
+    <section
+      id="customerAccountSection"
+      class="section customer-account-section"
+      hidden
+    >
+      <div class="section-heading">
+        <span class="section-eyebrow" data-i18n="yourAccount">
+          YOUR ACCOUNT
+        </span>
+
+        <h2 data-i18n="yourRequests">Your quote requests</h2>
+
+        <p data-i18n="accountIntro">
+          Track replies, counteroffers, and confirmed bookings.
+        </p>
+      </div>
+
+      <div id="customerQuoteHistory"></div>
+    </section>
+
+  </main>
+
+  <!-- WORKER DASHBOARD -->
+  <section id="workerDashboard" class="section dashboard-section" hidden>
+    <div class="dashboard-header">
+      <div>
+        <span class="section-eyebrow" data-i18n="workerSpace">WORKER SPACE</span>
+        <h2 data-i18n="workerDashboard">Worker Dashboard</h2>
+        <p data-i18n="dashboardIntro">
+          Review customer requests and respond to proposed quotes.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        id="customerModeBtn"
+        class="secondary-button"
+        data-i18n="backCustomer"
+      >← Back to Customer View</button>
+    </div>
+
+    <div class="dashboard-intro">
+      <span class="dashboard-intro-icon">📬</span>
+      <div>
+        <h3 data-i18n="quoteRequests">Your quote requests</h3>
+        <p data-i18n="quoteRequestsIntro">
+          Accept a request, decline it, or make a counteroffer.
+        </p>
+      </div>
+    </div>
+
+    <div id="workerProfilePanel"></div>
+    <div id="quoteRequests" class="quote-requests-list"></div>
+  </section>
+
+  <!-- QUOTE REQUEST DIALOG -->
+  <dialog id="quoteDialog" class="quote-dialog">
+    <div class="dialog-header">
+      <div>
+        <span class="section-eyebrow" data-i18n="letsStart">LET'S GET STARTED</span>
+        <h2 data-i18n="requestQuote">Request a quote</h2>
+        <p data-i18n="quoteIntro">Share a few details about the work you need done.</p>
+      </div>
+
+      <button type="button" id="cancelQuote" class="dialog-close" aria-label="Close dialog">×</button>
+    </div>
+
+    <form id="quoteForm">
+      <div class="form-field">
+        <label for="selectedWorker" data-i18n="selectedPro">Selected professional</label>
+        <input type="text" id="selectedWorker" readonly>
+      </div>
+
+      <div class="form-field">
+        <label for="customerName" data-i18n="yourName">Your name</label>
+        <input type="text" id="customerName" placeholder="Enter your name" data-i18n-placeholder="namePlaceholder" required>
+      </div>
+
+      <div class="form-field">
+        <label for="jobDescription" data-i18n="describeJob">Describe the job</label>
+        <textarea id="jobDescription" rows="4" placeholder="Tell the professional what you need help with..." data-i18n-placeholder="jobPlaceholder" required></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="offerAmount" data-i18n="proposedAmount">Your proposed amount (₹)</label>
+        <input type="number" id="offerAmount" min="1" step="1" placeholder="Enter your offer" data-i18n-placeholder="offerPlaceholder" required>
+        <small data-i18n="priceCanChange">You can discuss a different price with the professional.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="appointmentDate">Preferred appointment date</label>
+        <input type="date" id="appointmentDate" name="appointmentDate" required>
+      </div>
+
+      <div class="form-field">
+        <label for="appointmentTime">Preferred appointment time</label>
+        <input type="time" id="appointmentTime" name="appointmentTime" required>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" id="cancelQuoteSecondary" class="secondary-button" data-i18n="cancel">Cancel</button>
+        <button type="submit" class="primary-button" data-i18n="sendRequest">Send Quote Request</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- CUSTOMER AUTHENTICATION -->
+  <dialog id="customerAuthDialog" class="quote-dialog">
+    <div class="dialog-header">
+      <div>
+        <span class="section-eyebrow" data-i18n="customerSpace">CUSTOMER SPACE</span>
+        <h2 data-i18n="customerAccount">Customer account</h2>
+        <p data-i18n="authIntro">Register or log in to track your quote requests.</p>
+      </div>
+
+      <button type="button" class="dialog-close" id="closeCustomerAuth" aria-label="Close dialog">×</button>
+    </div>
+
+    <div class="auth-tabs">
+      <button type="button" class="secondary-button active" id="showCustomerRegister" data-i18n="register">Register</button>
+      <button type="button" class="secondary-button" id="showCustomerLogin" data-i18n="login">Login</button>
+    </div>
+
+    <form id="customerRegisterForm">
+      <div class="form-field">
+        <label for="registerCustomerName" data-i18n="fullName">Full name</label>
+        <input id="registerCustomerName" required autocomplete="name">
+      </div>
+
+      <div class="form-field">
+        <label for="registerCustomerEmail" data-i18n="email">Email</label>
+        <input id="registerCustomerEmail" type="email" required autocomplete="email">
+      </div>
+
+      <div class="form-field">
+        <label for="registerCustomerPhone" data-i18n="phone">Phone number</label>
+        <input id="registerCustomerPhone" type="tel" required autocomplete="tel">
+      </div>
+
+      <div class="form-field">
+        <label for="registerCustomerLocality" data-i18n="locality">Locality</label>
+        <input id="registerCustomerLocality" required placeholder="e.g. Kalyan West">
+      </div>
+
+      <div class="form-field">
+        <label for="registerCustomerPassword" data-i18n="password">Password (demo only)</label>
+        <input id="registerCustomerPassword" type="password" minlength="6" required autocomplete="new-password">
+      </div>
+
+      <p class="demo-note" data-i18n="demoVerification">
+        Prototype verification: registration is marked demo-verified.
+        No real identity or phone verification is performed.
+      </p>
+
+      <div class="dialog-actions">
+        <button type="submit" class="primary-button" data-i18n="createAccount">Create Account</button>
+      </div>
+    </form>
+
+    <form id="customerLoginForm" hidden>
+      <div class="form-field">
+        <label for="loginCustomerEmail" data-i18n="email">Email</label>
+        <input id="loginCustomerEmail" type="email" required autocomplete="email">
+      </div>
+
+      <div class="form-field">
+        <label for="loginCustomerPassword" data-i18n="password">Password</label>
+        <input id="loginCustomerPassword" type="password" required autocomplete="current-password">
+      </div>
+
+      <div class="dialog-actions">
+        <button type="submit" class="primary-button" data-i18n="login">Login</button>
+      </div>
+    </form>
+
+    <p id="customerAuthMessage" class="form-message" role="status"></p>
+  </dialog>
+
+  <!-- WORKER AUTHENTICATION -->
+  <dialog id="workerAuthDialog" class="quote-dialog">
+    <div class="dialog-header">
+      <div>
+        <span class="section-eyebrow" data-i18n="workerSpace">WORKER SPACE</span>
+        <h2 data-i18n="workerLogin">Worker login</h2>
+        <p data-i18n="workerLoginIntro">Sign in to access the private worker dashboard.</p>
+      </div>
+
+      <button type="button" class="dialog-close" id="closeWorkerAuth" aria-label="Close dialog">×</button>
+    </div>
+
+    <div class="auth-tabs">
+      <button type="button" class="secondary-button active" id="showWorkerLogin" data-i18n="login">Login</button>
+      <button type="button" class="secondary-button" id="showWorkerRegister" data-i18n="workerRegister">Worker Registration</button>
+    </div>
+
+    <form id="workerLoginForm">
+      <div class="form-field">
+        <label for="workerEmail" data-i18n="email">Email</label>
+        <input id="workerEmail" type="email" required autocomplete="username">
+      </div>
+
+      <div class="form-field">
+        <label for="workerPassword" data-i18n="password">Password</label>
+        <input id="workerPassword" type="password" required autocomplete="current-password">
+      </div>
+
+      <p class="demo-note">
+        <span data-i18n="demoCredentials">Demo credentials:</span><br>
+        <strong>worker@fairwork.local</strong><br>
+        <strong>FairWorkDemo123!</strong>
+      </p>
+
+      <button type="submit" class="primary-button" data-i18n="loginToDashboard">Login to Dashboard</button>
+    </form>
+
+    <form id="workerRegisterForm" hidden>
+      <div class="form-field">
+        <label for="newWorkerName" data-i18n="fullName">Full name</label>
+        <input id="newWorkerName" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerEmail" data-i18n="email">Email</label>
+        <input id="newWorkerEmail" type="email" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerPhone" data-i18n="phone">Phone number</label>
+        <input id="newWorkerPhone" type="tel" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerService" data-i18n="serviceCategory">Service category</label>
+        <select id="newWorkerService" required>
+          <option value="Electrician">Electrician</option>
+          <option value="Plumber">Plumber</option>
+          <option value="Cleaner">Cleaner</option>
+          <option value="Painter">Painter</option>
+          <option value="Carpenter">Carpenter</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerLocality" data-i18n="locality">Locality</label>
+        <input id="newWorkerLocality" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerExperience" data-i18n="yearsExperience">Years of experience</label>
+        <input id="newWorkerExperience" type="number" min="0" max="60" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerPrice" data-i18n="startingPrice">Starting price (₹)</label>
+        <input id="newWorkerPrice" type="number" min="1" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerIdType" data-i18n="verificationDocument">Verification document type (demo)</label>
+        <select id="newWorkerIdType" required>
+          <option value="Aadhaar">Aadhaar</option>
+          <option value="PAN">PAN</option>
+          <option value="Driving licence">Driving licence</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerIdLast4" data-i18n="documentLast4">Document reference (last 4 characters only; do not enter full ID)</label>
+        <input id="newWorkerIdLast4" minlength="4" maxlength="4" required>
+      </div>
+
+      <div class="form-field">
+        <label for="newWorkerPassword" data-i18n="password">Password (demo only)</label>
+        <input id="newWorkerPassword" type="password" minlength="6" required>
+      </div>
+
+      <p class="demo-note" data-i18n="workerVerificationNote">
+        Demo verification only: submitted details are stored in this browser
+        and are not checked against government records.
+      </p>
+
+      <button type="submit" class="primary-button" data-i18n="submitVerification">Submit registration</button>
+    </form>
+
+    <p id="workerAuthMessage" class="form-message" role="status"></p>
+  </dialog>
+
+  <!-- BOOKING TRACKING DIALOG -->
+  <dialog id="trackingDialog" class="quote-dialog">
+    <div class="dialog-header">
+      <div>
+        <span class="section-eyebrow">LIVE BOOKING TRACKING</span>
+        <h2>Track your professional</h2>
+        <p id="trackingStatus" aria-live="polite">
+          Waiting for the worker to start the journey.
+        </p>
+      </div>
+
+      <button type="button" id="closeTrackingDialog" class="dialog-close" aria-label="Close tracking">×</button>
+    </div>
+
+    <div class="tracking-summary">
+      <div class="tracking-summary-item">
+        <span>Estimated arrival</span>
+        <strong id="trackingETA">Waiting for location</strong>
+      </div>
+
+      <div class="tracking-summary-item">
+        <span>Journey status</span>
+        <strong id="trackingJourneyStatus">Not started</strong>
+      </div>
+    </div>
+
+    <div
+      id="bookingTrackingMap"
+      class="fairwork-map"
+      role="application"
+      aria-label="Map showing the worker's location and route"
+    ></div>
+
+    <p id="trackingMessage" class="form-message" role="status">
+      The worker's location will appear when live tracking begins.
+    </p>
+  </dialog>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-main">
+      <a href="#" class="logo footer-logo">
+        <span class="logo-icon">F</span>
+        <span>FairWork <span class="logo-accent">Local</span></span>
+      </a>
+
+      <p data-i18n="footerText">
+        Connecting local skills with fair opportunities. Built as a prototype
+        for a better local services experience.
+      </p>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 FairWork Local</span>
+      <span data-i18n="footerMade">Made for local communities 💚</span>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS: preserve this order -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+  <script src="map-tracking.js"></script>
+</body>
+</html>
